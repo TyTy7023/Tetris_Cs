@@ -507,7 +507,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: S T A R T
+  m_Text: "B \u1EAE T  \u0110 \u1EA6 U"
 --- !u!222 &568792566
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -713,7 +713,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: I N F I N I T E
+  m_Text: "V \xD4  H \u1EA0 N"
 --- !u!222 &596414734
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1030,7 +1030,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: S T A G E
+  m_Text: "M \xC0 N  C H \u01A0 I "
 --- !u!222 &1442550292
 CanvasRenderer:
   m_ObjectHideFlags: 0
