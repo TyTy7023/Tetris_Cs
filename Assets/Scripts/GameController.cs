@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour {
     private readonly int NUM_OF_STAGES = 20;
 
     public float fallTime = 0.8f;
-    private float N = 20;
+    private float N = 3;
     public Vector3 startPos = new Vector3();
     private readonly Vector3[] Pivots = new[] { new Vector3(-0.33f, 0f, 0f), new Vector3(-0.27f, -0.15f, 0f), new Vector3(-0.27f, 0.1f, 0f), new Vector3(-0.12f, -0.1f, 0f), new Vector3(-0.22f, -0.1f, 0f), new Vector3(-0.02f, -0.1f, 0f), new Vector3(-0.2f, 0.1f, 0f) };
 
