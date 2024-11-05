@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour {
     void InitGame() {
         FindObjectOfType<AudioManager>().Play("GameStart");
         controller = GameObject.FindWithTag("ModeController").GetComponent<ModeController>();
-        gameModeValue.text = (controller.GetMode() == Mode.stage ? "S T A G E" : "I N F I N I T E") + "  M O D E";
+        gameModeValue.text = "M O D E  " +(controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N") ;
         infoText.SetActive(false);
         restartButton.SetActive(false);
         resumeButton.SetActive(false);
