@@ -14,7 +14,7 @@ using Mode = Helper.Mode;
 public class GameController : MonoBehaviour {
     private readonly string STAGES_PATH = "Assets/Stages/";
     private readonly int[] scores = { 0, 40, 100, 300, 1200 };
-    private readonly int NUM_OF_STAGES = 20;
+    private readonly int NUM_OF_STAGES = 3;
 
     public float fallTime = 0.8f;
     private float N = 3;
@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour {
     void InitGame() {
         FindObjectOfType<AudioManager>().Play("GameStart");
         controller = GameObject.FindWithTag("ModeController").GetComponent<ModeController>();
-        gameModeValue.text = "M O D E  " +(controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N") ;
+        gameModeValue.text = "M O D E :  " +(controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N") ;
         infoText.SetActive(false);
         restartButton.SetActive(false);
         resumeButton.SetActive(false);
@@ -399,7 +399,7 @@ public class GameController : MonoBehaviour {
         print("GAME OVER!!!");
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
-        infoText.GetComponent<TextMeshProUGUI>().text = "GAME OVER";
+        infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
         FindObjectOfType<AudioManager>().Stop("GameStart");
         restartButton.SetActive(true);
     }
@@ -408,7 +408,7 @@ public class GameController : MonoBehaviour {
         print("GameClear");
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
-        infoText.GetComponent<TextMeshProUGUI>().text = "GAME CLEAR";
+        infoText.GetComponent<TextMeshProUGUI>().text = "C H U Y Ể N  M À N";
         FindObjectOfType<AudioManager>().Stop("GameStart");
         FindObjectOfType<AudioManager>().Play("GameClear");
         StartCoroutine(CountDown());
