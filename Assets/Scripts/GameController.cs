@@ -11,6 +11,7 @@ using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
 using Mode = Helper.Mode;
 using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
 
 public class GameController : MonoBehaviour {
     private readonly string STAGES_PATH = "Assets/Stages/";
@@ -69,12 +70,12 @@ public class GameController : MonoBehaviour {
         isShowingAnimation = false;
         isEndTurn = false;
         isAnimating = false;
-        isRestart = false;
         playTime = 0;
         if (currBlock != null) currBlock.Destroy();
         NextBlock();
         if (controller.GetMode() == Mode.stage) SetStage();
         NewBlock();
+
     }
 
     public void Pause() {
@@ -86,13 +87,10 @@ public class GameController : MonoBehaviour {
 
     public void Restart()
     {
-        gameClear = true;
-        print("GameClear");
-        if (ghostBlock != null) ghostBlock.Destroy();
-        infoText.SetActive(true);
-        FindObjectOfType<AudioManager>().Stop("GameStart");
-        FindObjectOfType<AudioManager>().Play("GameClear");
+        EventSystem.current.SetSelectedGameObject(null);
+        currStage = 0;
         InitGame();
+
     }
 
     public void Resume() {
@@ -150,11 +148,6 @@ public class GameController : MonoBehaviour {
 
     void Update() {
         if (isPaused && Input.GetKeyDown(KeyCode.P)) Resume();
-        foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
-            if (Input.GetKeyDown(keyCode))
-            {
-                Debug.Log("Key Pressed: " + keyCode);
-            }
         
         else if (!isEndTurn && !gameOver && !gameClear && !isPaused && !isShowingAnimation) {
             if (Input.GetKey(KeyCode.LeftArrow) && Time.time - previousToLeft > 0.1f) {
