@@ -76,6 +76,7 @@ public class GameController : MonoBehaviour {
         if (controller.GetMode() == Mode.stage) SetStage();
         NewBlock();
 
+        Debug.Log(numGems);
     }
 
     public void Pause() {
@@ -89,6 +90,7 @@ public class GameController : MonoBehaviour {
     {
         EventSystem.current.SetSelectedGameObject(null);
         currStage = 0;
+        numGems = 0;
         InitGame();
 
     }
@@ -389,7 +391,6 @@ public class GameController : MonoBehaviour {
             gameOver = true;
             GameOver();
         }
-
         if (controller.GetMode() == Mode.stage && numGems == 0) {
             gameClear = true;
             GameClear();
