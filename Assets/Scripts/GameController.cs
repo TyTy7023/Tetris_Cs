@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
     private readonly int NUM_OF_STAGES = 3;
 
     public float fallTime = 0.8f;
-    private float N = 5;
+    private float N = 10;
     public Vector3 startPos = new Vector3();
     private readonly Vector3[] Pivots = new[] { new Vector3(-0.33f, 0f, 0f), new Vector3(-0.27f, -0.15f, 0f), new Vector3(-0.27f, 0.1f, 0f), new Vector3(-0.12f, -0.1f, 0f), new Vector3(-0.22f, -0.1f, 0f), new Vector3(-0.02f, -0.1f, 0f), new Vector3(-0.2f, 0.1f, 0f) };
 
@@ -177,8 +177,8 @@ public class GameController : MonoBehaviour {
                 isEndTurn = false;
             }
 
-            nextLevel = Mathf.RoundToInt(linesDeleted/N);
-            if (Int16.Parse(levelValue.text) < nextLevel) fallTime /= 1f + (Mathf.RoundToInt(linesDeleted / N) * 0.1f);
+            nextLevel = Mathf.RoundToInt(linesDeleted / N);
+            if (Int16.Parse(levelValue.text) < nextLevel && nextLevel < 5) fallTime -= 0.1f;
 
 
             playTime += Time.deltaTime;
@@ -195,6 +195,8 @@ public class GameController : MonoBehaviour {
         linesValue.text = linesDeleted.ToString();
         stageValue.text = (currStage + 1).ToString();
         scoreValue.text = score.ToString();
+        scoreHis.text = score.ToString();
+
     }
 
     private void GhostBlockImgUpdate() {
