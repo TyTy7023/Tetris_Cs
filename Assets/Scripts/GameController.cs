@@ -10,14 +10,14 @@ using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
 using Mode = Helper.Mode;
+using UnityEngine.UIElements;
 
 public class GameController : MonoBehaviour {
     private readonly string STAGES_PATH = "Assets/Stages/";
-    private readonly int[] scores = { 0, 40, 100, 300, 1200 };
     private readonly int NUM_OF_STAGES = 3;
 
     public float fallTime = 0.8f;
-    private float N = 3;
+    private float N = 5;
     public Vector3 startPos = new Vector3();
     private readonly Vector3[] Pivots = new[] { new Vector3(-0.33f, 0f, 0f), new Vector3(-0.27f, -0.15f, 0f), new Vector3(-0.27f, 0.1f, 0f), new Vector3(-0.12f, -0.1f, 0f), new Vector3(-0.22f, -0.1f, 0f), new Vector3(-0.02f, -0.1f, 0f), new Vector3(-0.2f, 0.1f, 0f) };
 
@@ -42,16 +42,18 @@ public class GameController : MonoBehaviour {
     public TetrisBlock nextBlockObject;
     public TetrisBlock currBlock;
     public TetrisBlock deadBlock;
-    public GameObject nextBlockBackground, infoText, restartButton, resumeButton, pauseButton, speakerButton, muteButton;
+    public GameObject nextBlockBackground, infoText, restartButton, resumeButton, pauseButton, speakerButton, muteButton, homeButton;
     public GemBlock gemBlock;
     private GhostBlock ghostBlock;
-    private bool hardDropped, gameOver, gameClear, isDestroying, isPaused, isShowingAnimation, isRowDown, isAnimating, isEndTurn;
+    private bool hardDropped, gameOver, gameClear, isDestroying, isPaused, isShowingAnimation, isRowDown, isAnimating, isEndTurn, isRestart;
     private ModeController controller;
-    public Text timeValue, levelValue, linesValue, stageValue, scoreValue, gameModeValue;
+    public Text timeValue, levelValue, linesValue, stageValue, scoreValue, gameModeValue, scoreHis;
 
-    void Start() {
+    void Start()
+    {
         muteButton.SetActive(true);
         speakerButton.SetActive(false);
+        restartButton.SetActive(true);
         InitGame();
     }
 
@@ -60,16 +62,15 @@ public class GameController : MonoBehaviour {
         controller = GameObject.FindWithTag("ModeController").GetComponent<ModeController>();
         gameModeValue.text = "M O D E :  " +(controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N") ;
         infoText.SetActive(false);
-        restartButton.SetActive(false);
         resumeButton.SetActive(false);
+        homeButton.SetActive(false);
         gameOver = false;
         gameClear = false;
         isShowingAnimation = false;
         isEndTurn = false;
         isAnimating = false;
+        isRestart = false;
         playTime = 0;
-        linesDeleted = 0;
-        score = 0;
         if (currBlock != null) currBlock.Destroy();
         NextBlock();
         if (controller.GetMode() == Mode.stage) SetStage();
@@ -81,6 +82,17 @@ public class GameController : MonoBehaviour {
         pauseButton.SetActive(false);
         resumeButton.SetActive(true);
         FindObjectOfType<AudioManager>().Mute("GameStart", true);
+    }
+
+    public void Restart()
+    {
+        gameClear = true;
+        print("GameClear");
+        if (ghostBlock != null) ghostBlock.Destroy();
+        infoText.SetActive(true);
+        FindObjectOfType<AudioManager>().Stop("GameStart");
+        FindObjectOfType<AudioManager>().Play("GameClear");
+        InitGame();
     }
 
     public void Resume() {
@@ -138,6 +150,12 @@ public class GameController : MonoBehaviour {
 
     void Update() {
         if (isPaused && Input.GetKeyDown(KeyCode.P)) Resume();
+        foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+            if (Input.GetKeyDown(keyCode))
+            {
+                Debug.Log("Key Pressed: " + keyCode);
+            }
+        
         else if (!isEndTurn && !gameOver && !gameClear && !isPaused && !isShowingAnimation) {
             if (Input.GetKey(KeyCode.LeftArrow) && Time.time - previousToLeft > 0.1f) {
                 HorizontalMove(Vector3.left);
@@ -164,8 +182,9 @@ public class GameController : MonoBehaviour {
                 isEndTurn = false;
             }
 
-            nextLevel = Mathf.RoundToInt((linesDeleted / N) + 1);
+            nextLevel = Mathf.RoundToInt(linesDeleted/N);
             if (Int16.Parse(levelValue.text) < nextLevel) fallTime /= 1f + (Mathf.RoundToInt(linesDeleted / N) * 0.1f);
+
 
             playTime += Time.deltaTime;
             int minutes = Mathf.RoundToInt((playTime % (60 * 60 * 60)) / (60 * 60)), seconds = Mathf.RoundToInt((playTime % (60 * 60)) / 60), microseconds = Mathf.RoundToInt(playTime % 60);
@@ -245,8 +264,8 @@ public class GameController : MonoBehaviour {
                 deletingRow.Add(y);
             }
         }
-        score += scores[deletingRow.Count] * Mathf.RoundToInt((linesDeleted / N) + 1);
         linesDeleted += deletingRow.Count;
+        score = 5*linesDeleted + currStage*10;
         if (deletingRow != null) {
             isAnimating = true;
         }
@@ -377,6 +396,7 @@ public class GameController : MonoBehaviour {
             gameOver = true;
             GameOver();
         }
+
         if (controller.GetMode() == Mode.stage && numGems == 0) {
             gameClear = true;
             GameClear();
@@ -401,7 +421,7 @@ public class GameController : MonoBehaviour {
         infoText.SetActive(true);
         infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
         FindObjectOfType<AudioManager>().Stop("GameStart");
-        restartButton.SetActive(true);
+        homeButton.SetActive(true);
     }
 
     private void GameClear() {
