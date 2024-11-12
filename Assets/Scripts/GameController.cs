@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour {
     public TetrisBlock[] Blocks;
     
     public GhostBlock[] Ghosts;
-    private int nextBlock, scorceHistory;
+    private int nextBlock, scoreStage, scoreInf;
     public TetrisBlock nextBlockObject;
     public TetrisBlock currBlock;
     public TetrisBlock deadBlock;
@@ -57,7 +57,8 @@ public class GameController : MonoBehaviour {
         restartButton.SetActive(true);
         InitGame();
         score = 0;
-        scorceHistory = PlayerPrefs.GetInt("Score", 0);
+        scoreStage = PlayerPrefs.GetInt("ScoreStage", 0);
+        scoreInf = PlayerPrefs.GetInt("ScoreInf", 0);
 
     }
 
@@ -220,15 +221,30 @@ public class GameController : MonoBehaviour {
             stageValue.text = (currStage + 1).ToString();
         else stageValue.text = "-";
         scoreValue.text = score.ToString();
-        if (score >= scorceHistory) 
+        if (controller.GetMode() == Mode.stage)
         {
-            scoreHis.text = score.ToString();
+            if (score >= scoreStage)
+            {
+                scoreHis.text = score.ToString();
 
-            // Lưu điểm số
-            PlayerPrefs.SetInt("Score", score);
-            PlayerPrefs.Save(); // Đảm bảo lưu ngay lập tức (tùy chọn)
+                // Lưu điểm số
+                PlayerPrefs.SetInt("ScoreStage", score);
+                PlayerPrefs.Save(); // Đảm bảo lưu ngay lập tức (tùy chọn)
+            }
+            else scoreHis.text = scoreStage.ToString();
         }
-        else scoreHis.text = scorceHistory.ToString();
+        else
+        {
+            if (score >= scoreInf)
+            {
+                scoreHis.text = score.ToString();
+
+                // Lưu điểm số
+                PlayerPrefs.SetInt("ScoreInf", score);
+                PlayerPrefs.Save(); // Đảm bảo lưu ngay lập tức (tùy chọn)
+            }
+            else scoreHis.text = scoreInf.ToString();
+        } 
 
     }
 
