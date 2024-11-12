@@ -3397,7 +3397,7 @@ MonoBehaviour:
     type: 3}
   nextBlockBackground: {fileID: 967146549}
   infoText: {fileID: 726207614}
-  restartButton: {fileID: 835369205}
+  restartButton: {fileID: 402844906}
   resumeButton: {fileID: 708935065}
   pauseButton: {fileID: 630228078}
   speakerButton: {fileID: 672798872}
@@ -3411,7 +3411,7 @@ MonoBehaviour:
   stageValue: {fileID: 631771313}
   scoreValue: {fileID: 1686195301}
   gameModeValue: {fileID: 1798623953}
-  scoreHis: {fileID: 0}
+  scoreHis: {fileID: 323413419}
 --- !u!4 &1693517412
 Transform:
   m_ObjectHideFlags: 0

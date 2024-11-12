@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour {
     public TetrisBlock[] Blocks;
     
     public GhostBlock[] Ghosts;
-    private int nextBlock;
+    private int nextBlock, scorceHistory;
     public TetrisBlock nextBlockObject;
     public TetrisBlock currBlock;
     public TetrisBlock deadBlock;
@@ -56,6 +56,9 @@ public class GameController : MonoBehaviour {
         speakerButton.SetActive(false);
         restartButton.SetActive(true);
         InitGame();
+        score = 0;
+        scorceHistory = PlayerPrefs.GetInt("Score", 0);
+
     }
 
     void InitGame() {
@@ -195,7 +198,8 @@ public class GameController : MonoBehaviour {
         linesValue.text = linesDeleted.ToString();
         stageValue.text = (currStage + 1).ToString();
         scoreValue.text = score.ToString();
-        scoreHis.text = score.ToString();
+        if (score >= scorceHistory) scoreHis.text = score.ToString();
+        else scoreHis.text = scorceHistory.ToString();
 
     }
 
@@ -413,6 +417,10 @@ public class GameController : MonoBehaviour {
 
     private void GameOver() {
         print("GAME OVER!!!");
+        // Lưu điểm số
+        PlayerPrefs.SetInt("Score", score);
+        PlayerPrefs.Save(); // Đảm bảo lưu ngay lập tức (tùy chọn)
+
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
         infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
