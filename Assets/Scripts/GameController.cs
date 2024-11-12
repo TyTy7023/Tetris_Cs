@@ -77,6 +77,7 @@ public class GameController : MonoBehaviour {
         if (currBlock != null) currBlock.Destroy();
         NextBlock();
         if (controller.GetMode() == Mode.stage) SetStage();
+        else SetInf();
         NewBlock();
 
         Debug.Log(numGems);
@@ -94,6 +95,9 @@ public class GameController : MonoBehaviour {
         EventSystem.current.SetSelectedGameObject(null);
         currStage = 0;
         numGems = 0;
+        score = 0;
+        linesDeleted = 0;
+        nextLevel = 0;
         InitGame();
 
     }
@@ -151,6 +155,22 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    void SetInf()
+    {
+        for (int y = 0; y < Helper.HEIGHT; y++)
+        {
+            for (int x = 0; x < Helper.WIDTH; x++)
+            {
+                if (grid[y, x] != null)
+                {
+                    grid[y, x].Destroy();
+                    grid[y, x] = null;
+                }
+
+            }
+        }
+    }
+
     void Update() {
         if (isPaused && Input.GetKeyDown(KeyCode.P)) Resume();
         
@@ -196,9 +216,18 @@ public class GameController : MonoBehaviour {
     private void InfoUpdate() {
         levelValue.text = nextLevel.ToString();
         linesValue.text = linesDeleted.ToString();
-        stageValue.text = (currStage + 1).ToString();
+        if (controller.GetMode() == Mode.stage)
+            stageValue.text = (currStage + 1).ToString();
+        else stageValue.text = "-";
         scoreValue.text = score.ToString();
-        if (score >= scorceHistory) scoreHis.text = score.ToString();
+        if (score >= scorceHistory) 
+        {
+            scoreHis.text = score.ToString();
+
+            // Lưu điểm số
+            PlayerPrefs.SetInt("Score", score);
+            PlayerPrefs.Save(); // Đảm bảo lưu ngay lập tức (tùy chọn)
+        }
         else scoreHis.text = scorceHistory.ToString();
 
     }
@@ -392,7 +421,7 @@ public class GameController : MonoBehaviour {
         NewGhost();
         NextBlock();
         isShowingAnimation = false;
-        if (grid[18, 4] != null) {
+        if (grid[18, 4] != null || gameOver) {
             print("going to gameover");
             gameOver = true;
             GameOver();
@@ -417,9 +446,6 @@ public class GameController : MonoBehaviour {
 
     private void GameOver() {
         print("GAME OVER!!!");
-        // Lưu điểm số
-        PlayerPrefs.SetInt("Score", score);
-        PlayerPrefs.Save(); // Đảm bảo lưu ngay lập tức (tùy chọn)
 
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
