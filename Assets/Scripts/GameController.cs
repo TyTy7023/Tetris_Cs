@@ -229,7 +229,9 @@ public class GameController : MonoBehaviour {
 
                 // Lưu điểm số
                 PlayerPrefs.SetInt("ScoreStage", score);
-                PlayerPrefs.Save(); // Đảm bảo lưu ngay lập tức (tùy chọn)
+                PlayerPrefs.Save();
+
+                Debug.Log(PlayerPrefs.GetInt("ScoreStage"));
             }
             else scoreHis.text = scoreStage.ToString();
         }
@@ -241,7 +243,9 @@ public class GameController : MonoBehaviour {
 
                 // Lưu điểm số
                 PlayerPrefs.SetInt("ScoreInf", score);
-                PlayerPrefs.Save(); // Đảm bảo lưu ngay lập tức (tùy chọn)
+                PlayerPrefs.Save();
+                Debug.Log(PlayerPrefs.GetInt("ScoreInf"));
+
             }
             else scoreHis.text = scoreInf.ToString();
         } 
@@ -311,7 +315,7 @@ public class GameController : MonoBehaviour {
             }
         }
         linesDeleted += deletingRow.Count;
-        score = 5*linesDeleted + currStage*10;
+        score = 5*linesDeleted;
         if (deletingRow != null) {
             isAnimating = true;
         }
@@ -431,7 +435,7 @@ public class GameController : MonoBehaviour {
         return ghostBlock.transform.position + Vector3.up;
     }
 
-    private void NewBlock() {
+    public void NewBlock() {
         print("newblock start");
         currBlock = Instantiate(Blocks[nextBlock], startPos, Quaternion.identity);
         NewGhost();
