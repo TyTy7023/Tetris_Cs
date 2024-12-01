@@ -1,25 +1,25 @@
 # Tetris
-## About
-World's one of the most famous games, Tetris project with C# and Unity. Implemented most features that is needed for the contemporary Tetris series.
+## Về
+Một trong những trò chơi nổi tiếng nhất thế giới, dự án Tetris với C# và Unity. Đã triển khai hầu hết các tính năng cần thiết cho dòng game Tetris đương đại.
 
-## Main Features
-### Stage / Infinity Mode
-The game can start with two different modes. Infinity mode is a classic one, but in the Stage mode, you need to find and clear gems (the orange blocks) to clear the stage and go to the next level.
+## Tính năng chính
+### Giai đoạn / Chế độ vô cực
+Trò chơi có thể bắt đầu với hai chế độ khác nhau. Chế độ vô cực là một chế độ cổ điển, nhưng ở chế độ Giai đoạn, bạn cần tìm và xóa các viên đá quý (khối màu cam) để vượt qua bàn chơi và chuyển sang màn tiếp theo.
 
-### Score
-When a line is cleared, the score increases based on the number of lines cleared at once. 
+### Điểm
+Khi một dòng được xóa, điểm sẽ tăng lên dựa trên số dòng được xóa cùng một lúc. 
 
-### Preview next piece
-You can see the next piece of a tetromino upper-right side of the screen.
+### Xem trước phần tiếp theo
+Bạn có thể thấy phần tiếp theo của tetromino ở phía trên bên phải màn hình.
 
-### Ghost Piece
-A tetromino will land if it is allowed to drop into the bottom field. As you moves the falling piece, the ghost piece moves below it.
+### Mảnh ma
+Một tetromino sẽ hạ cánh nếu nó được phép rơi xuống ô phía dưới. Khi bạn di chuyển mảnh rơi, mảnh ma sẽ di chuyển bên dưới nó.
 
-### Hard/Soft Drop
-If you push the space bar, a Tetromino drops instantly to where the Ghost Piece is. It can't be moved or rotated afterwards. It causes the Score to go up. If you need more sensitive control, you can push the down arrow button to drop softly.
+### Thả cứng/mềm
+Nếu bạn nhấn phím cách, Tetromino sẽ ngay lập tức rơi xuống vị trí của Mảnh ma. Nó không thể được di chuyển hoặc xoay sau đó. Nó làm cho Điểm tăng lên. Nếu cần điều khiển nhạy hơn có thể nhấn nút mũi tên xuống để thả nhẹ nhàng.
 
-### Background Music and Sound effect
-Implement the classic BGM as well as the sound effects for Tetris arcade version.
+### Nhạc nền và hiệu ứng âm thanh
+Triển khai BGM cổ điển cũng như hiệu ứng âm thanh cho phiên bản arcade Tetris.
 
 ## Demo
 ![demo]
