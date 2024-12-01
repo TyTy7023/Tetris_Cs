@@ -44,6 +44,7 @@ public class GameController : MonoBehaviour {
     public TetrisBlock currBlock;
     public TetrisBlock deadBlock;
     public GameObject nextBlockBackground, infoText, restartButton, resumeButton, pauseButton, speakerButton, muteButton, homeButton;
+    public GameObject frameButton, replayFrame, yesButton, noButton, replayText;
     public GemBlock gemBlock;
     private GhostBlock ghostBlock;
     private bool hardDropped, gameOver, gameClear, isDestroying, isPaused, isShowingAnimation, isRowDown, isAnimating, isEndTurn, isRestart;
@@ -67,8 +68,13 @@ public class GameController : MonoBehaviour {
         controller = GameObject.FindWithTag("ModeController").GetComponent<ModeController>();
         gameModeValue.text = "M O D E :  " +(controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N") ;
         infoText.SetActive(false);
+        replayText.SetActive(false);
+        frameButton.SetActive(false);
+        replayFrame.SetActive(false);
         resumeButton.SetActive(false);
         homeButton.SetActive(false);
+        yesButton.SetActive(false);
+        noButton.SetActive(false);
         gameOver = false;
         gameClear = false;
         isShowingAnimation = false;
@@ -80,6 +86,7 @@ public class GameController : MonoBehaviour {
         if (controller.GetMode() == Mode.stage) SetStage();
         else SetInf();
         NewBlock();
+        homeButton.SetActive(true);
 
         Debug.Log(numGems);
     }
@@ -191,7 +198,10 @@ public class GameController : MonoBehaviour {
             } else if (Input.GetKeyDown(KeyCode.P)) {
                 Pause();
             }
-
+            if (Input.GetKeyDown(KeyCode.Escape)) // Nhấn Space để test
+            {
+                GoBack();
+            }
             if (Time.time - previousTime > (Input.GetKey(KeyCode.DownArrow) ? fallTime / 10 : fallTime)) {
                 VerticalMove(Vector3.down);
                 previousTime = Time.time;
@@ -200,8 +210,10 @@ public class GameController : MonoBehaviour {
                 EndTurn();
                 isEndTurn = false;
             }
+            if (currStage >= 19) GameOver();
 
-            nextLevel = Mathf.RoundToInt(linesDeleted / N);
+
+                nextLevel = Mathf.RoundToInt(linesDeleted / N);
             if (Int16.Parse(levelValue.text) < nextLevel && nextLevel < 5) fallTime -= 0.1f;
 
 
@@ -468,10 +480,18 @@ public class GameController : MonoBehaviour {
         print("GAME OVER!!!");
 
         if (ghostBlock != null) ghostBlock.Destroy();
+        yesButton.SetActive(true);
+        noButton.SetActive(true);
+        frameButton.SetActive(true);
+        replayFrame.SetActive(true);
         infoText.SetActive(true);
-        infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
+        replayText.SetActive(true);
+        if (currStage >= 19)
+            infoText.GetComponent<TextMeshProUGUI>().text = "T H Ắ N G";
+        else
+            infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
+        replayText.GetComponent<TextMeshProUGUI>().text = "C H Ơ I  L Ạ I";
         FindObjectOfType<AudioManager>().Stop("GameStart");
-        homeButton.SetActive(true);
     }
 
     private void GameClear() {
@@ -497,7 +517,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void GoBack() {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("ModeScene");
     }
 }
 

@@ -636,10 +636,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: 276113ce-c8a5-4ec1-80ab-16a8385d7284
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: Tetris_Cs
+  organizationId: tranbuityty
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
