@@ -14,9 +14,6 @@ using UnityEngine.UIElements;
 using UnityEngine.EventSystems;
 
 public class GameController : MonoBehaviour {
-    private readonly string STAGES_PATH = "Assets/Stages/";
-    private readonly int NUM_OF_STAGES = 3;
-
     public float fallTime = 0.8f;
     private float N = 10;
     public Vector3 startPos = new Vector3();
@@ -30,7 +27,7 @@ public class GameController : MonoBehaviour {
     private int nextLevel;
     private List<int> deletingRow = new List<int>();
 
-    private int currStage = 0;
+    private int currStage = 9;
 
     private HashSet<int> deck = new HashSet<int>();
 
@@ -210,7 +207,7 @@ public class GameController : MonoBehaviour {
                 EndTurn();
                 isEndTurn = false;
             }
-            if (currStage >= 19) GameOver();
+            if (currStage == 10) GameFinish();
             
 
             nextLevel = Mathf.RoundToInt(linesDeleted / N);
@@ -228,20 +225,19 @@ public class GameController : MonoBehaviour {
     }
 
     private void InfoUpdate() {
-        levelValue.text = nextLevel.ToString();
         linesValue.text = linesDeleted.ToString();
-        if (controller.GetMode() == Mode.stage)
-            stageValue.text = (currStage + 1).ToString();
-        else stageValue.text = "-";
-        scoreValue.text = score.ToString();
+        
         if (controller.GetMode() == Mode.stage)
         {
-            if (score >= scoreStage)
+            scoreValue.text = "-";
+            stageValue.text = (currStage + 1).ToString();
+            levelValue.text = "0";
+            if ((currStage + 1) >= scoreStage)
             {
-                scoreHis.text = score.ToString();
+                scoreHis.text = (currStage + 1).ToString();
 
                 // Lưu điểm số
-                PlayerPrefs.SetInt("ScoreStage", score);
+                PlayerPrefs.SetInt("ScoreStage", (currStage + 1));
                 PlayerPrefs.Save();
 
                 Debug.Log(PlayerPrefs.GetInt("ScoreStage"));
@@ -250,6 +246,8 @@ public class GameController : MonoBehaviour {
         }
         else
         {
+            scoreValue.text = score.ToString();
+            stageValue.text = "-";
             if (score >= scoreInf)
             {
                 scoreHis.text = score.ToString();
@@ -457,7 +455,7 @@ public class GameController : MonoBehaviour {
         if (grid[18, 4] != null || gameOver) {
             print("going to gameover");
             gameOver = true;
-            GameOver();
+            GameFinish();
         }
         if (controller.GetMode() == Mode.stage && numGems == 0) {
             gameClear = true;
@@ -477,7 +475,7 @@ public class GameController : MonoBehaviour {
         print("newghostend");
 }
 
-    private void GameOver() {
+    private void GameFinish() {
         print("GAME OVER!!!");
 
         if (ghostBlock != null) ghostBlock.Destroy();
@@ -487,7 +485,7 @@ public class GameController : MonoBehaviour {
         replayFrame.SetActive(true);
         infoText.SetActive(true);
         replayText.SetActive(true);
-        if (currStage >= 19)
+        if (currStage == 10)
         {
             gameOver = true;
             infoText.GetComponent<TextMeshProUGUI>().text = "HOÀN  THÀNH";
@@ -500,7 +498,7 @@ public class GameController : MonoBehaviour {
 
     private void GameClear() {
         print("GameClear");
-        if (currStage >= 19) GameOver();
+        if (currStage == 10) GameFinish();
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
         infoText.GetComponent<TextMeshProUGUI>().text = "C H U Y Ể N  M À N";
@@ -525,13 +523,4 @@ public class GameController : MonoBehaviour {
         controller.SetMode(Mode.none);
         SceneManager.LoadScene("ModeScene");
     }
-}
-
-[Serializable]
-public class GameOverException : Exception
-{
-    public GameOverException() { }
-
-    public GameOverException(string message)
-        : base(message) { }
 }

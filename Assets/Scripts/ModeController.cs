@@ -63,7 +63,7 @@ public class ModeController : MonoBehaviour
             ModeController.mode = Mode.infinite;
         switch (ModeController.mode) {
             case Mode.stage:
-                stageMode.interactable = true;
+                stageMode.interactable = false;
                 infiniteMode.interactable = true;
                 break;
             case Mode.infinite:
