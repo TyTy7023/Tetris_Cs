@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Helper
 {
-    public enum Mode { stage, infinite };
+    public enum Mode { stage, infinite, none };
     public readonly static int HEIGHT = 20;
     public readonly static int WIDTH = 10;
     public readonly static int[,,] Stages = {
