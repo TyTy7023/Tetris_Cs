@@ -5,15 +5,22 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mode = Helper.Mode;
 using System.Numerics;
+using TMPro;
 
 public class ModeController : MonoBehaviour
 {
     static ModeController instance = null;
     public Button stageMode, infiniteMode, guider;
-    private static Mode mode = Mode.stage;
-    
-    private void Awake()
+    private static Mode mode = Mode.none;
+    public GameObject mess;
+
+    void Start()
     {
+        mess.SetActive(false);
+    }
+
+    private void Awake()
+    { 
         if (instance == null) {
             Debug.Log("ModeController instance has been assigned");
             instance = this;
@@ -22,8 +29,16 @@ public class ModeController : MonoBehaviour
     }
 
     public void StartGame() {
-        FindObjectOfType<AudioManager>().Play("Start");
-        SceneManager.LoadScene("GameScene");
+        Debug.Log(mode.ToString());
+        if (mode != Mode.none)
+        {
+            FindObjectOfType<AudioManager>().Play("Start");
+            SceneManager.LoadScene("GameScene");
+        }
+        else  mess.SetActive(true);
+
+
+
     }
     public void Guider()
     {
@@ -35,6 +50,11 @@ public class ModeController : MonoBehaviour
         return mode;
     }
 
+    public void SetMode(Mode mode)
+    {
+        ModeController.mode = mode;
+    }
+
     public void SetMode(int mode) {
         FindObjectOfType<AudioManager>().Play("MenuMove");
         if (mode == 0)
@@ -43,7 +63,7 @@ public class ModeController : MonoBehaviour
             ModeController.mode = Mode.infinite;
         switch (ModeController.mode) {
             case Mode.stage:
-                stageMode.interactable = false;
+                stageMode.interactable = true;
                 infiniteMode.interactable = true;
                 break;
             case Mode.infinite:

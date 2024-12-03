@@ -210,7 +210,7 @@ public class GameController : MonoBehaviour {
                 EndTurn();
                 isEndTurn = false;
             }
-            if (currStage < 19) GameOver();
+            if (currStage >= 19) GameOver();
             
 
             nextLevel = Mathf.RoundToInt(linesDeleted / N);
@@ -487,7 +487,7 @@ public class GameController : MonoBehaviour {
         replayFrame.SetActive(true);
         infoText.SetActive(true);
         replayText.SetActive(true);
-        if (currStage < 19)
+        if (currStage >= 19)
         {
             gameOver = true;
             infoText.GetComponent<TextMeshProUGUI>().text = "HOÀN  THÀNH";
@@ -500,7 +500,7 @@ public class GameController : MonoBehaviour {
 
     private void GameClear() {
         print("GameClear");
-        if (currStage < 19) GameOver();
+        if (currStage >= 19) GameOver();
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
         infoText.GetComponent<TextMeshProUGUI>().text = "C H U Y Ể N  M À N";
@@ -522,6 +522,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void GoBack() {
+        controller.SetMode(Mode.none);
         SceneManager.LoadScene("ModeScene");
     }
 }
