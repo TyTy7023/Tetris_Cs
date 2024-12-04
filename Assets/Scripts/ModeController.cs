@@ -11,12 +11,21 @@ public class ModeController : MonoBehaviour
 {
     static ModeController instance = null;
     public Button stageMode, infiniteMode, guider;
-    private static Mode mode = Mode.none;
-    public GameObject mess;
+    private static Mode mode = Mode.stage;
 
     void Start()
     {
-        mess.SetActive(false);
+        switch (ModeController.mode)
+        {
+            case Mode.stage:
+                stageMode.interactable = false;
+                infiniteMode.interactable = true;
+                break;
+            case Mode.infinite:
+                stageMode.interactable = true;
+                infiniteMode.interactable = false;
+                break;
+        }
     }
 
     private void Awake()
@@ -30,16 +39,10 @@ public class ModeController : MonoBehaviour
 
     public void StartGame() {
         Debug.Log(mode.ToString());
-        if (mode != Mode.none)
-        {
-            FindObjectOfType<AudioManager>().Play("Start");
-            SceneManager.LoadScene("GameScene");
-        }
-        else  mess.SetActive(true);
-
-
-
+        FindObjectOfType<AudioManager>().Play("Start");
+        SceneManager.LoadScene("GameScene");
     }
+
     public void Guider()
     {
         FindObjectOfType<AudioManager>().Play("Start");
@@ -48,11 +51,6 @@ public class ModeController : MonoBehaviour
 
     public Mode GetMode() {
         return mode;
-    }
-
-    public void SetMode(Mode mode)
-    {
-        ModeController.mode = mode;
     }
 
     public void SetMode(int mode) {

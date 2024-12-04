@@ -27,8 +27,8 @@ public class GameController : MonoBehaviour {
     private int nextLevel;
     private List<int> deletingRow = new List<int>();
 
-    private int currStage = 9;
-
+    private int currStage = 0;
+ 
     private HashSet<int> deck = new HashSet<int>();
 
     private Block[,] grid = new Block[Helper.HEIGHT, Helper.WIDTH];
@@ -507,6 +507,7 @@ public class GameController : MonoBehaviour {
 
     private void GameClear() {
         print("GameClear");
+        currStage++;
         if (currStage == 10) GameFinish();
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
@@ -524,12 +525,11 @@ public class GameController : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         infoText.GetComponent<TextMeshProUGUI>().text = "1";
         yield return new WaitForSeconds(0.5f);
-        currStage++;
+        
         InitGame();
     }
 
     public void GoBack() {
-        controller.SetMode(Mode.none);
         SceneManager.LoadScene("ModeScene");
     }
 }
