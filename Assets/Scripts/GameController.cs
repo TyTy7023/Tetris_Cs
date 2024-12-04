@@ -15,7 +15,7 @@ using UnityEngine.EventSystems;
 
 public class GameController : MonoBehaviour {
     public float fallTime = 0.8f;
-    private float N = 10;
+    private float N = 15;
     public Vector3 startPos = new Vector3();
     private readonly Vector3[] Pivots = new[] { new Vector3(-0.33f, 0f, 0f), new Vector3(-0.27f, -0.15f, 0f), new Vector3(-0.27f, 0.1f, 0f), new Vector3(-0.12f, -0.1f, 0f), new Vector3(-0.22f, -0.1f, 0f), new Vector3(-0.02f, -0.1f, 0f), new Vector3(-0.2f, 0.1f, 0f) };
 
@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour {
     private GhostBlock ghostBlock;
     private bool hardDropped, gameOver, gameClear, isDestroying, isPaused, isShowingAnimation, isRowDown, isAnimating, isEndTurn, isRestart;
     private ModeController controller;
-    public Text timeValue, levelValue, linesValue, stageValue, scoreValue, gameModeValue, scoreHis;
+    public Text timeValue, levelValue, linesValue, stageValue, scoreValue, gameModeValue, scoreHis, hisScoreText;
 
     void Start()
     {
@@ -78,9 +78,14 @@ public class GameController : MonoBehaviour {
         isEndTurn = false;
         isAnimating = false;
         playTime = 0;
+        levelValue.text = "1";
+        
         if (currBlock != null) currBlock.Destroy();
         NextBlock();
-        if (controller.GetMode() == Mode.stage) SetStage();
+        if (controller.GetMode() == Mode.stage) {
+            SetStage();
+            hisScoreText.text = "M À N  C A O  N H Ấ T";
+        } 
         else SetInf();
         NewBlock();
         homeButton.SetActive(true);
@@ -211,8 +216,7 @@ public class GameController : MonoBehaviour {
             
 
             nextLevel = Mathf.RoundToInt(linesDeleted / N);
-            if (controller.GetMode() == Mode.infinite) nextLevel = 0;
-            if (Int16.Parse(levelValue.text) < nextLevel && nextLevel < 5) fallTime -= 0.1f;
+            if (controller.GetMode() == Mode.stage) nextLevel = 0;
 
 
             playTime += Time.deltaTime;
@@ -231,7 +235,7 @@ public class GameController : MonoBehaviour {
         {
             scoreValue.text = "-";
             stageValue.text = (currStage + 1).ToString();
-            levelValue.text = "0";
+            levelValue.text = "1";
             if ((currStage + 1) >= scoreStage)
             {
                 scoreHis.text = (currStage + 1).ToString();
@@ -248,6 +252,11 @@ public class GameController : MonoBehaviour {
         {
             scoreValue.text = score.ToString();
             stageValue.text = "-";
+            if (Int16.Parse(levelValue.text) < nextLevel && nextLevel < 5)
+            {
+                levelValue.text = nextLevel.ToString();
+                fallTime -= 0.0f;
+            }
             if (score >= scoreInf)
             {
                 scoreHis.text = score.ToString();

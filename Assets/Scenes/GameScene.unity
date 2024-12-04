@@ -3418,7 +3418,7 @@ GameObject:
   - component: {fileID: 1308976623}
   - component: {fileID: 1308976622}
   m_Layer: 5
-  m_Name: Score Text (1)
+  m_Name: HisScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4077,6 +4077,7 @@ MonoBehaviour:
   scoreValue: {fileID: 1686195301}
   gameModeValue: {fileID: 1798623953}
   scoreHis: {fileID: 323413419}
+  hisScoreText: {fileID: 1308976622}
 --- !u!4 &1693517412
 Transform:
   m_ObjectHideFlags: 0
