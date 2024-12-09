@@ -79,18 +79,17 @@ public class GameController : MonoBehaviour {
         isAnimating = false;
         playTime = 0;
         levelValue.text = "1";
-        
         if (currBlock != null) currBlock.Destroy();
-        NextBlock();
+        
         if (controller.GetMode() == Mode.stage) {
             SetStage();
             hisScoreText.text = "M À N  C A O  N H Ấ T";
         } 
         else SetInf();
+        NextBlock();
         NewBlock();
         homeButton.SetActive(true);
 
-        Debug.Log(numGems);
     }
 
     public void Pause() {
@@ -243,8 +242,6 @@ public class GameController : MonoBehaviour {
                 // Lưu điểm số
                 PlayerPrefs.SetInt("ScoreStage", (currStage + 1));
                 PlayerPrefs.Save();
-
-                Debug.Log(PlayerPrefs.GetInt("ScoreStage"));
             }
             else scoreHis.text = scoreStage.ToString();
         }
@@ -264,7 +261,6 @@ public class GameController : MonoBehaviour {
                 // Lưu điểm số
                 PlayerPrefs.SetInt("ScoreInf", score);
                 PlayerPrefs.Save();
-                Debug.Log(PlayerPrefs.GetInt("ScoreInf"));
 
             }
             else scoreHis.text = scoreInf.ToString();
