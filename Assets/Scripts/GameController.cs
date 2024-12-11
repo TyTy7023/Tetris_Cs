@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour {
     public TetrisBlock currBlock;
     public TetrisBlock deadBlock;
     public GameObject nextBlockBackground, infoText, restartButton, resumeButton, pauseButton, speakerButton, muteButton, homeButton;
-    public GameObject frameButton, replayFrame, yesButton, noButton, replayText;
+    public GameObject yesButton, noButton, replayFrame;
     public GemBlock gemBlock;
     private GhostBlock ghostBlock;
     private bool hardDropped, gameOver, gameClear, isDestroying, isPaused, isShowingAnimation, isRowDown, isAnimating, isEndTurn, isRestart;
@@ -65,13 +65,11 @@ public class GameController : MonoBehaviour {
         controller = GameObject.FindWithTag("ModeController").GetComponent<ModeController>();
         gameModeValue.text = "M O D E :  " +(controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N") ;
         infoText.SetActive(false);
-        replayText.SetActive(false);
-        frameButton.SetActive(false);
+        yesButton.SetActive(false);
+        noButton.SetActive(false);
         replayFrame.SetActive(false);
         resumeButton.SetActive(false);
         homeButton.SetActive(false);
-        yesButton.SetActive(false);
-        noButton.SetActive(false);
         gameOver = false;
         gameClear = false;
         isShowingAnimation = false;
@@ -88,7 +86,6 @@ public class GameController : MonoBehaviour {
         else SetInf();
         NextBlock();
         NewBlock();
-        homeButton.SetActive(true);
 
     }
 
@@ -486,10 +483,9 @@ public class GameController : MonoBehaviour {
         if (ghostBlock != null) ghostBlock.Destroy();
         yesButton.SetActive(true);
         noButton.SetActive(true);
-        frameButton.SetActive(true);
         replayFrame.SetActive(true);
+        homeButton.SetActive(true);
         infoText.SetActive(true);
-        replayText.SetActive(true);
         if (currStage == 10)
         {
             gameOver = true;
@@ -497,7 +493,6 @@ public class GameController : MonoBehaviour {
         }
         else
             infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
-        replayText.GetComponent<TextMeshProUGUI>().text = "C H Ơ I  L Ạ I";
         FindObjectOfType<AudioManager>().Stop("GameStart");
     }
 
