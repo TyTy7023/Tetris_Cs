@@ -220,7 +220,7 @@ public class GameController : MonoBehaviour {
             if (currStage == 10) GameFinish();
             
 
-            nextLevel = Mathf.RoundToInt(linesDeleted / N);
+            nextLevel = Mathf.FloorToInt(linesDeleted / N);
             if (controller.GetMode() == Mode.stage) nextLevel = 0;
 
 
@@ -259,7 +259,7 @@ public class GameController : MonoBehaviour {
             if (Int16.Parse(levelValue.text) < nextLevel && nextLevel < 5)
             {
                 levelValue.text = nextLevel.ToString();
-                    fallTime -= 0.05f;
+                    fallTime -= 0.1f;
                 }
             if (score >= scoreInf)
             {
