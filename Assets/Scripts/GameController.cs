@@ -256,7 +256,7 @@ public class GameController : MonoBehaviour {
             scoreValue.text = score.ToString();
             stageValue.text = "-";
 
-            if (Int16.Parse(levelValue.text) < nextLevel && nextLevel < 4)
+            if (Int16.Parse(levelValue.text) < nextLevel && nextLevel < 5)
             {
                 levelValue.text = nextLevel.ToString();
                     fallTime -= 0.15f;
