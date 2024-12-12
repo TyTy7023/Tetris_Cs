@@ -96,6 +96,8 @@ public class GameController : MonoBehaviour {
         pauseButton.SetActive(false);
         resumeButton.SetActive(true);
         FindObjectOfType<AudioManager>().Mute("GameStart", true);
+        muteButton.SetActive(true);
+        speakerButton.SetActive(false);
     }
 
     public void Restart()
@@ -114,6 +116,8 @@ public class GameController : MonoBehaviour {
         resumeButton.SetActive(false);
         pauseButton.SetActive(true);
         FindObjectOfType<AudioManager>().Mute("GameStart", false);
+        muteButton.SetActive(false);
+        speakerButton.SetActive(true);
     }
 
     public void Mute(bool isMute) {
