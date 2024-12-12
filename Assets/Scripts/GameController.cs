@@ -493,6 +493,7 @@ public class GameController : MonoBehaviour {
         }
         else
             infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
+        //replayText.GetComponent<TextMeshProUGUI>().text = "C H Ơ I  L Ạ I";
         FindObjectOfType<AudioManager>().Stop("GameStart");
     }
 
