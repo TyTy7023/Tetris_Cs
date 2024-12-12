@@ -56,12 +56,11 @@ public class GameController : MonoBehaviour {
         restartButton.SetActive(true);
         InitGame();
         score = 0;
-        scoreStage = PlayerPrefs.GetInt("ScoreStage", 0);
-        scoreInf = PlayerPrefs.GetInt("ScoreInf", 0);
-
     }
 
     void InitGame() {
+        scoreStage = PlayerPrefs.GetInt("ScoreStage", 0);
+        scoreInf = PlayerPrefs.GetInt("ScoreInf", 0);
         FindObjectOfType<AudioManager>().Play("GameStart");
         controller = GameObject.FindWithTag("ModeController").GetComponent<ModeController>();
         gameModeValue.text = "M O D E :  " +(controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N") ;
