@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour {
     public float fallTime = 0.8f;
     private float N = 15;
     public Vector3 startPos = new Vector3();
-    private readonly Vector3[] Pivots = new[] { new Vector3(-0.33f, 0f, 0f), new Vector3(-0.27f, -0.15f, 0f), new Vector3(-0.27f, 0.1f, 0f), new Vector3(-0.12f, -0.1f, 0f), new Vector3(-0.22f, -0.1f, 0f), new Vector3(-0.02f, -0.1f, 0f), new Vector3(-0.2f, 0.1f, 0f) };
+    private readonly Vector3[] Pivots = new[] { new Vector3(-0.33f, 0f, -1f), new Vector3(-0.27f, -0.15f, -1f), new Vector3(-0.27f, 0.1f, -1f), new Vector3(-0.12f, -0.1f, -1f), new Vector3(-0.22f, -0.1f, -1f), new Vector3(-0.02f, -0.1f, -1f), new Vector3(-0.2f, 0.1f, -1f) };
 
     private float previousTime, previousToLeft, previousToRight;
     private int score = 0;
@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour {
     public TetrisBlock nextBlockObject;
     public TetrisBlock currBlock;
     public TetrisBlock deadBlock;
-    public GameObject nextBlockBackground, infoText, restartButton, resumeButton, pauseButton, speakerButton, muteButton, homeButton;
+    public GameObject nextBlockBackground, infoText, restartButton, restartIcon, resumeButton, pauseButton, speakerButton, muteButton, homeButton;
     public GameObject yesButton, noButton, replayFrame;
     public GemBlock gemBlock;
     private GhostBlock ghostBlock;
@@ -69,6 +69,8 @@ public class GameController : MonoBehaviour {
         noButton.SetActive(false);
         replayFrame.SetActive(false);
         resumeButton.SetActive(false);
+        restartIcon.SetActive(true);
+        restartButton.SetActive(true);
         homeButton.SetActive(false);
         gameOver = false;
         gameClear = false;
@@ -105,7 +107,6 @@ public class GameController : MonoBehaviour {
         linesDeleted = 0;
         nextLevel = 0;
         InitGame();
-
     }
 
     public void Resume() {
@@ -125,7 +126,7 @@ public class GameController : MonoBehaviour {
             speakerButton.SetActive(false);
         }
     }
-
+        
     void NextBlock() {
         print("nextblock start");
         if (deck.Count == Blocks.Length) deck.Clear();
@@ -451,8 +452,7 @@ public class GameController : MonoBehaviour {
     public void NewBlock() {
         print("newblock start");
         currBlock = Instantiate(Blocks[nextBlock], startPos, Quaternion.identity);
-        NewGhost();
-        NextBlock();
+        
         isShowingAnimation = false;
         if (grid[18, 4] != null || gameOver) {
             print("going to gameover");
@@ -463,6 +463,8 @@ public class GameController : MonoBehaviour {
             gameClear = true;
             GameClear();
         }
+        NewGhost();
+        NextBlock();
         print("newblock end");
     }
 
@@ -493,19 +495,21 @@ public class GameController : MonoBehaviour {
         }
         else
             infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
-        //replayText.GetComponent<TextMeshProUGUI>().text = "C H Ơ I  L Ạ I";
         FindObjectOfType<AudioManager>().Stop("GameStart");
     }
 
     private void GameClear() {
         print("GameClear");
         currStage++;
+        
         if (currStage == 10) GameFinish();
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
         infoText.GetComponent<TextMeshProUGUI>().text = "C H U Y Ể N  M À N";
         FindObjectOfType<AudioManager>().Stop("GameStart");
         FindObjectOfType<AudioManager>().Play("GameClear");
+        restartButton.SetActive(false);
+        restartIcon.SetActive(false);
         StartCoroutine(CountDown());
     }
 

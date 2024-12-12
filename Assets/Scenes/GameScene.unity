@@ -650,7 +650,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &169384839
 MonoBehaviour:
@@ -1106,7 +1106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 343457994}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.463, y: 9.102, z: 0}
+  m_LocalPosition: {x: 1.463, y: 9.102, z: 1}
   m_LocalScale: {x: 1.6191508, y: 1.9334009, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1334,7 +1334,7 @@ MonoBehaviour:
   m_material: {fileID: 0}
   m_sharedMaterial: {fileID: 0}
   m_isDefaultMaterial: 0
-  m_padding: 5.8793745
+  m_padding: 5.676875
   m_canvasRenderer: {fileID: 467636522}
   m_TextComponent: {fileID: 1987813168}
   m_materialReferenceIndex: 1
@@ -2021,7 +2021,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &672798875
 MonoBehaviour:
@@ -2913,7 +2913,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967146549}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13, y: 16, z: 0}
+  m_LocalPosition: {x: 13, y: 16, z: 1}
   m_LocalScale: {x: 4.5, y: 4.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3887,6 +3887,7 @@ MonoBehaviour:
   nextBlockBackground: {fileID: 967146549}
   infoText: {fileID: 726207614}
   restartButton: {fileID: 402844906}
+  restartIcon: {fileID: 835369205}
   resumeButton: {fileID: 708935065}
   pauseButton: {fileID: 630228078}
   speakerButton: {fileID: 672798872}
