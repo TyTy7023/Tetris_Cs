@@ -108,6 +108,7 @@ public class GameController : MonoBehaviour {
         score = 0;
         linesDeleted = 0;
         nextLevel = 0;
+        Resume();
         InitGame();
     }
 
