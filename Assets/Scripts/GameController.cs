@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour {
     private int numGems = 0;
     private float playTime;
     private int nextLevel;
+    private bool isCounting = false;
     private List<int> deletingRow = new List<int>();
 
     private int currStage = 0;
@@ -92,6 +93,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void Pause() {
+        if (isCounting) return;
         isPaused = true;
         pauseButton.SetActive(false);
         resumeButton.SetActive(true);
@@ -113,6 +115,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void Resume() {
+        if (isCounting) return;
         isPaused = false;
         resumeButton.SetActive(false);
         pauseButton.SetActive(true);
@@ -519,6 +522,7 @@ public class GameController : MonoBehaviour {
     }
 
     private IEnumerator CountDown() {
+        isCounting = true;
         yield return new WaitForSeconds(0.5f);
         infoText.GetComponent<TextMeshProUGUI>().text = "3";
         yield return new WaitForSeconds(0.5f);
@@ -526,6 +530,7 @@ public class GameController : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         infoText.GetComponent<TextMeshProUGUI>().text = "1";
         yield return new WaitForSeconds(0.5f);
+        isCounting = false;
         
         InitGame();
     }
