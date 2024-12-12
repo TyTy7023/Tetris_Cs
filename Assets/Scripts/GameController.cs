@@ -79,7 +79,7 @@ public class GameController : MonoBehaviour {
         isEndTurn = false;
         isAnimating = false;
         playTime = 0;
-        levelValue.text = "1";
+        levelValue.text = "0";
         if (currBlock != null) currBlock.Destroy();
         
         if (controller.GetMode() == Mode.stage) {
@@ -240,7 +240,7 @@ public class GameController : MonoBehaviour {
         {
             scoreValue.text = "-";
             stageValue.text = (currStage + 1).ToString();
-            levelValue.text = "1";
+            levelValue.text = "0";
             if ((currStage + 1) >= scoreStage)
             {
                 scoreHis.text = (currStage + 1).ToString();
