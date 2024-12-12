@@ -50,8 +50,8 @@ public class GameController : MonoBehaviour {
 
     void Start()
     {
-        muteButton.SetActive(true);
-        speakerButton.SetActive(false);
+        muteButton.SetActive(false);
+        speakerButton.SetActive(true);
         restartButton.SetActive(true);
         InitGame();
         score = 0;
@@ -117,7 +117,7 @@ public class GameController : MonoBehaviour {
 
     public void Mute(bool isMute) {
         FindObjectOfType<AudioManager>().Mute("GameStart", isMute);
-        if (isMute) {
+        if (!isMute) {
             muteButton.SetActive(false);
             speakerButton.SetActive(true);
         } else {
