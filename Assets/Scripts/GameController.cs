@@ -260,6 +260,7 @@ public class GameController : MonoBehaviour
                 EndTurn();
                 isEndTurn = false;
             }
+            
             if (grid[18, 4] != null || gameOver) GameFinish("T H U A  R Ồ I");
             
             if (controller.GetMode() == Mode.stage && numGems == 0)
@@ -276,8 +277,9 @@ public class GameController : MonoBehaviour
             timeValue.text = String.Format("{0}:{1}:{2}", (minutes < 10 ? "0" : "") + minutes.ToString(), (seconds < 10 ? "0" : "") + seconds.ToString(), (microseconds < 10 ? "0" : "") + microseconds.ToString());
 
             GhostBlockImgUpdate();
-            InfoUpdate();
+            if(currStage < 10) InfoUpdate();
         }
+        if (currStage == 10) GameFinish("HOÀN  THÀNH");
     }
 
     private void InfoUpdate()
@@ -592,8 +594,8 @@ public class GameController : MonoBehaviour
     {
         currStage+=1;
 
-        if (currStage == 10) GameFinish("HOÀN  THÀNH");
-        else { 
+        if (currStage < 10)
+        { 
             if (ghostBlock != null) ghostBlock.Destroy();
             infoText.SetActive(true);
             infoText.GetComponent<TextMeshProUGUI>().text = "C H U Y Ể N  M À N";
