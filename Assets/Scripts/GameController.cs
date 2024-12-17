@@ -95,7 +95,11 @@ public class GameController : MonoBehaviour
 
     public void Pause()
     {
-        if (isCounting) return;
+        if (isCounting)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            return;
+        }
         isPaused = true;
         pauseButton.SetActive(false);
         resumeButton.SetActive(true);
@@ -106,8 +110,11 @@ public class GameController : MonoBehaviour
 
     public void Restart()
     {
-        if (isCounting) return;
-        EventSystem.current.SetSelectedGameObject(null);
+        if(isCounting)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            return;
+        }
         currStage = 0;
         numGems = 0;
         score = 0;
@@ -120,7 +127,11 @@ public class GameController : MonoBehaviour
 
     public void Resume()
     {
-        if (isCounting) return;
+        if (isCounting)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            return;
+        }
         isPaused = false;
         resumeButton.SetActive(false);
         pauseButton.SetActive(true);
