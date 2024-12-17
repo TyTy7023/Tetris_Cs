@@ -263,19 +263,19 @@ public class GameController : MonoBehaviour
             }
             nextLevel = Mathf.FloorToInt(linesDeleted / N);
             if (controller.GetMode() == Mode.stage) nextLevel = 0;
-            if (grid[18, 4] != null || gameOver)
-            {
-                print("going to gameover");
-                gameOver = true;
-                GameFinish();
-            }
-
+            
             playTime += Time.deltaTime;
             int minutes = Mathf.RoundToInt((playTime % (60 * 60 * 60)) / (60 * 60)), seconds = Mathf.RoundToInt((playTime % (60 * 60)) / 60), microseconds = Mathf.RoundToInt(playTime % 60);
             timeValue.text = String.Format("{0}:{1}:{2}", (minutes < 10 ? "0" : "") + minutes.ToString(), (seconds < 10 ? "0" : "") + seconds.ToString(), (microseconds < 10 ? "0" : "") + microseconds.ToString());
 
             GhostBlockImgUpdate();
             InfoUpdate();
+            if (grid[18, 4] != null || gameOver)
+            {
+                print("going to gameover");
+                gameOver = true;
+                GameFinish();
+            }
         }
     }
 
