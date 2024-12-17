@@ -260,19 +260,14 @@ public class GameController : MonoBehaviour
                 EndTurn();
                 isEndTurn = false;
             }
-            if (currStage == 10) GameFinish();
-
+            if (grid[18, 4] != null || gameOver) GameFinish("T H U A  R Ồ I");
+            
             if (controller.GetMode() == Mode.stage && numGems == 0)
             {
                 gameClear = true;
                 GameClear();
             }
-            if (grid[18, 4] != null || gameOver)
-            {
-                print("going to gameover");
-                gameOver = true;
-                GameFinish();
-            }
+            
             nextLevel = Mathf.FloorToInt(linesDeleted / N);
             if (controller.GetMode() == Mode.stage) nextLevel = 0;
             
@@ -282,12 +277,6 @@ public class GameController : MonoBehaviour
 
             GhostBlockImgUpdate();
             InfoUpdate();
-            if (grid[18, 4] != null || gameOver)
-            {
-                print("going to gameover");
-                gameOver = true;
-                GameFinish();
-            }
         }
     }
 
@@ -585,38 +574,33 @@ public class GameController : MonoBehaviour
         print("newghostend");
     }
 
-    private void GameFinish()
+    private void GameFinish(string finish)
     {
-        print("GAME OVER!!!");
-
         if (ghostBlock != null) ghostBlock.Destroy();
         yesButton.SetActive(true);
         noButton.SetActive(true);
         replayFrame.SetActive(true);
         homeButton.SetActive(true);
         infoText.SetActive(true);
-        if (currStage == 10)
-        {
-            gameOver = true;
-            infoText.GetComponent<TextMeshProUGUI>().text = "HOÀN  THÀNH";
-        }
-        else
-            infoText.GetComponent<TextMeshProUGUI>().text = "T H U A  R Ồ I";
+        gameOver = true;
+        infoText.GetComponent<TextMeshProUGUI>().text = finish;
+        
         FindObjectOfType<AudioManager>().Stop("GameStart");
     }
 
     private void GameClear()
     {
-        print("GameClear");
-        currStage++;
+        currStage+=1;
 
-        if (currStage == 10) GameFinish();
-        if (ghostBlock != null) ghostBlock.Destroy();
-        infoText.SetActive(true);
-        infoText.GetComponent<TextMeshProUGUI>().text = "C H U Y Ể N  M À N";
-        FindObjectOfType<AudioManager>().Stop("GameStart");
-        FindObjectOfType<AudioManager>().Play("GameClear");
-        StartCoroutine(CountDown());
+        if (currStage == 10) GameFinish("HOÀN  THÀNH");
+        else { 
+            if (ghostBlock != null) ghostBlock.Destroy();
+            infoText.SetActive(true);
+            infoText.GetComponent<TextMeshProUGUI>().text = "C H U Y Ể N  M À N";
+            FindObjectOfType<AudioManager>().Stop("GameStart");
+            FindObjectOfType<AudioManager>().Play("GameClear");
+            StartCoroutine(CountDown());
+        }
     }
 
     private IEnumerator CountDown()
