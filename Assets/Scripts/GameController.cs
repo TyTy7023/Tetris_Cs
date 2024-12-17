@@ -218,11 +218,25 @@ public class GameController : MonoBehaviour {
                 isEndTurn = false;
             }
             if (currStage == 10) GameFinish();
-            
 
+            if (controller.GetMode() == Mode.stage && numGems == 0)
+            {
+                gameClear = true;
+                GameClear();
+            }
+            if (grid[18, 4] != null || gameOver)
+            {
+                print("going to gameover");
+                gameOver = true;
+                GameFinish();
+            }
             nextLevel = Mathf.FloorToInt(linesDeleted / N);
             if (controller.GetMode() == Mode.stage) nextLevel = 0;
-
+                    if (grid[18, 4] != null || gameOver) {
+            print("going to gameover");
+            gameOver = true;
+            GameFinish();
+        }
 
             playTime += Time.deltaTime;
             int minutes = Mathf.RoundToInt((playTime % (60 * 60 * 60)) / (60 * 60)), seconds = Mathf.RoundToInt((playTime % (60 * 60)) / 60), microseconds = Mathf.RoundToInt(playTime % 60);
@@ -461,17 +475,8 @@ public class GameController : MonoBehaviour {
     public void NewBlock() {
         print("newblock start");
         currBlock = Instantiate(Blocks[nextBlock], startPos, Quaternion.identity);
-        
         isShowingAnimation = false;
-        if (grid[18, 4] != null || gameOver) {
-            print("going to gameover");
-            gameOver = true;
-            GameFinish();
-        }
-        if (controller.GetMode() == Mode.stage && numGems == 0) {
-            gameClear = true;
-            GameClear();
-        }
+
         NewGhost();
         NextBlock();
         print("newblock end");
@@ -532,8 +537,10 @@ public class GameController : MonoBehaviour {
         infoText.GetComponent<TextMeshProUGUI>().text = "1";
         yield return new WaitForSeconds(0.5f);
         isCounting = false;
-        
-        InitGame();
+
+        gameClear = false;
+        infoText.SetActive(false);
+        SetStage();
     }
 
     public void GoBack() {
