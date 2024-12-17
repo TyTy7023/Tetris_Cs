@@ -13,7 +13,8 @@ using Mode = Helper.Mode;
 using UnityEngine.UIElements;
 using UnityEngine.EventSystems;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
     public float fallTime = 0.8f;
     private float N = 15;
     public Vector3 startPos = new Vector3();
@@ -29,13 +30,13 @@ public class GameController : MonoBehaviour {
     private List<int> deletingRow = new List<int>();
 
     private int currStage = 0;
- 
+
     private HashSet<int> deck = new HashSet<int>();
 
     private Block[,] grid = new Block[Helper.HEIGHT, Helper.WIDTH];
 
     public TetrisBlock[] Blocks;
-    
+
     public GhostBlock[] Ghosts;
     private int nextBlock, scoreStage, scoreInf;
     public TetrisBlock nextBlockObject;
@@ -58,12 +59,13 @@ public class GameController : MonoBehaviour {
         score = 0;
     }
 
-    void InitGame() {
+    void InitGame()
+    {
         scoreStage = PlayerPrefs.GetInt("ScoreStage", 0);
         scoreInf = PlayerPrefs.GetInt("ScoreInf", 0);
         FindObjectOfType<AudioManager>().Play("GameStart");
         controller = GameObject.FindWithTag("ModeController").GetComponent<ModeController>();
-        gameModeValue.text = "M O D E :  " +(controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N") ;
+        gameModeValue.text = "M O D E :  " + (controller.GetMode() == Mode.stage ? "M À N  C H Ơ I" : "V Ô  H Ạ N");
         infoText.SetActive(false);
         yesButton.SetActive(false);
         noButton.SetActive(false);
@@ -79,19 +81,20 @@ public class GameController : MonoBehaviour {
         isAnimating = false;
         playTime = 0;
         levelValue.text = "0";
-        if (currBlock != null) currBlock.Destroy();
-        
-        if (controller.GetMode() == Mode.stage) {
+
+        if (controller.GetMode() == Mode.stage)
+        {
             SetStage();
             hisScoreText.text = "M À N  C A O  N H Ấ T";
-        } 
+        }
         else SetInf();
         NextBlock();
         NewBlock();
 
     }
 
-    public void Pause() {
+    public void Pause()
+    {
         if (isCounting) return;
         isPaused = true;
         pauseButton.SetActive(false);
@@ -103,6 +106,7 @@ public class GameController : MonoBehaviour {
 
     public void Restart()
     {
+        if (isCounting) return;
         EventSystem.current.SetSelectedGameObject(null);
         currStage = 0;
         numGems = 0;
@@ -114,7 +118,8 @@ public class GameController : MonoBehaviour {
         InitGame();
     }
 
-    public void Resume() {
+    public void Resume()
+    {
         if (isCounting) return;
         isPaused = false;
         resumeButton.SetActive(false);
@@ -124,18 +129,23 @@ public class GameController : MonoBehaviour {
         speakerButton.SetActive(true);
     }
 
-    public void Mute(bool isMute) {
+    public void Mute(bool isMute)
+    {
         FindObjectOfType<AudioManager>().Mute("GameStart", isMute);
-        if (!isMute) {
+        if (!isMute)
+        {
             muteButton.SetActive(false);
             speakerButton.SetActive(true);
-        } else {
+        }
+        else
+        {
             muteButton.SetActive(true);
             speakerButton.SetActive(false);
         }
     }
-        
-    void NextBlock() {
+
+    void NextBlock()
+    {
         print("nextblock start");
         if (deck.Count == Blocks.Length) deck.Clear();
         do nextBlock = Random.Range(0, Blocks.Length);
@@ -149,12 +159,17 @@ public class GameController : MonoBehaviour {
         print("nextblock end");
     }
 
-    void SetStage() {
-        for (int y = 0; y < Helper.HEIGHT; y++) {
-            for (int x = 0; x < Helper.WIDTH; x++) {
+    void SetStage()
+    {
+        if (currBlock != null) currBlock.Destroy();
+        for (int y = 0; y < Helper.HEIGHT; y++)
+        {
+            for (int x = 0; x < Helper.WIDTH; x++)
+            {
                 if (grid[y, x] != null) grid[y, x].Destroy();
                 int blockType = Helper.Stages[currStage, Helper.HEIGHT - y - 1, x];
-                switch (blockType) {
+                switch (blockType)
+                {
                     case 0:
                         grid[y, x] = null;
                         break;
@@ -172,6 +187,7 @@ public class GameController : MonoBehaviour {
 
     void SetInf()
     {
+        if (currBlock != null) currBlock.Destroy();
         for (int y = 0; y < Helper.HEIGHT; y++)
         {
             for (int x = 0; x < Helper.WIDTH; x++)
@@ -186,34 +202,49 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    void Update() {
+    void Update()
+    {
         if (isPaused && Input.GetKeyDown(KeyCode.P)) Resume();
-        
-        else if (!isEndTurn && !gameOver && !gameClear && !isPaused && !isShowingAnimation) {
-            if (Input.GetKey(KeyCode.LeftArrow) && Time.time - previousToLeft > 0.1f) {
+
+        else if (!isEndTurn && !gameOver && !gameClear && !isPaused && !isShowingAnimation)
+        {
+            if (Input.GetKey(KeyCode.LeftArrow) && Time.time - previousToLeft > 0.1f)
+            {
                 HorizontalMove(Vector3.left);
                 previousToLeft = Time.time;
-            } else if (Input.GetKey(KeyCode.RightArrow) && Time.time - previousToRight > 0.1f) {
+            }
+            else if (Input.GetKey(KeyCode.RightArrow) && Time.time - previousToRight > 0.1f)
+            {
                 HorizontalMove(Vector3.right);
                 previousToRight = Time.time;
-            } else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
                 Rotate();
-            } else if (Input.GetKeyDown(KeyCode.Space)) {
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
                 while (ValidMove(currBlock.transform) && !hardDropped) VerticalMove(Vector3.down);
-            } else if (Input.GetKeyUp(KeyCode.Space)) {
+            }
+            else if (Input.GetKeyUp(KeyCode.Space))
+            {
                 hardDropped = false;
-            } else if (Input.GetKeyDown(KeyCode.P)) {
+            }
+            else if (Input.GetKeyDown(KeyCode.P))
+            {
                 Pause();
             }
             if (Input.GetKeyDown(KeyCode.Escape)) // Nhấn Space để test
             {
                 GoBack();
             }
-            if (Time.time - previousTime > (Input.GetKey(KeyCode.DownArrow) ? fallTime / 10 : fallTime)) {
+            if (Time.time - previousTime > (Input.GetKey(KeyCode.DownArrow) ? fallTime / 10 : fallTime))
+            {
                 VerticalMove(Vector3.down);
                 previousTime = Time.time;
             }
-            if (isAnimating && !isEndTurn) {
+            if (isAnimating && !isEndTurn)
+            {
                 EndTurn();
                 isEndTurn = false;
             }
@@ -232,11 +263,12 @@ public class GameController : MonoBehaviour {
             }
             nextLevel = Mathf.FloorToInt(linesDeleted / N);
             if (controller.GetMode() == Mode.stage) nextLevel = 0;
-                    if (grid[18, 4] != null || gameOver) {
-            print("going to gameover");
-            gameOver = true;
-            GameFinish();
-        }
+            if (grid[18, 4] != null || gameOver)
+            {
+                print("going to gameover");
+                gameOver = true;
+                GameFinish();
+            }
 
             playTime += Time.deltaTime;
             int minutes = Mathf.RoundToInt((playTime % (60 * 60 * 60)) / (60 * 60)), seconds = Mathf.RoundToInt((playTime % (60 * 60)) / 60), microseconds = Mathf.RoundToInt(playTime % 60);
@@ -247,9 +279,10 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void InfoUpdate() {
+    private void InfoUpdate()
+    {
         linesValue.text = linesDeleted.ToString();
-        
+
         if (controller.GetMode() == Mode.stage)
         {
             scoreValue.text = "-";
@@ -273,8 +306,8 @@ public class GameController : MonoBehaviour {
             if (Int16.Parse(levelValue.text) < nextLevel && nextLevel < 5)
             {
                 levelValue.text = nextLevel.ToString();
-                    fallTime -= 0.15f;
-                }
+                fallTime -= 0.15f;
+            }
             if (score >= scoreInf)
             {
                 scoreHis.text = score.ToString();
@@ -285,38 +318,46 @@ public class GameController : MonoBehaviour {
 
             }
             else scoreHis.text = scoreInf.ToString();
-        } 
+        }
 
     }
 
-    private void GhostBlockImgUpdate() {
-        if (!ghostBlock.IsDestroyed()) {
+    private void GhostBlockImgUpdate()
+    {
+        if (!ghostBlock.IsDestroyed())
+        {
             ghostBlock.transform.position = GhostPosition(currBlock.transform.position);
         }
     }
 
-    void Rotate() {
+    void Rotate()
+    {
         Transform currTransform = currBlock.transform;
         currTransform.RotateAround(currTransform.TransformPoint(currBlock.rotationPoint), Vector3.forward, 90);
         ghostBlock.transform.RotateAround(ghostBlock.transform.TransformPoint(currBlock.rotationPoint), Vector3.forward, 90);
 
-        if (!ValidMove(currBlock.transform)) {
+        if (!ValidMove(currBlock.transform))
+        {
             currTransform.RotateAround(currTransform.TransformPoint(currBlock.rotationPoint), Vector3.forward, -90);
             ghostBlock.transform.RotateAround(ghostBlock.transform.TransformPoint(currBlock.rotationPoint), Vector3.forward, -90);
 
         }
     }
 
-    void HorizontalMove(Vector3 nextMove) {
+    void HorizontalMove(Vector3 nextMove)
+    {
         currBlock.transform.position += nextMove;
-        if (!ValidMove(currBlock.transform)) {
+        if (!ValidMove(currBlock.transform))
+        {
             currBlock.transform.position -= nextMove;
         }
     }
 
-    void VerticalMove(Vector3 nextMove) {
+    void VerticalMove(Vector3 nextMove)
+    {
         currBlock.transform.position += nextMove;
-        if (!ValidMove(currBlock.transform)) {
+        if (!ValidMove(currBlock.transform))
+        {
             currBlock.transform.position -= nextMove;
             CreateDeadBlock();
             DestroyCurrBlock();
@@ -324,12 +365,15 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void CreateDeadBlock() {
-        foreach (Transform children in currBlock.transform) {
+    private void CreateDeadBlock()
+    {
+        foreach (Transform children in currBlock.transform)
+        {
             int roundedY = Mathf.RoundToInt(children.transform.position.y);
             int roundedX = Mathf.RoundToInt(children.transform.position.x);
             Color currColor = children.GetComponent<SpriteRenderer>().color;
-            if (grid[roundedY, roundedX] == null) {
+            if (grid[roundedY, roundedX] == null)
+            {
                 TetrisBlock curr = Instantiate(deadBlock, new Vector3(roundedX, roundedY, 0), Quaternion.identity);
                 curr.sprite.GetComponent<SpriteRenderer>().color = currColor;
                 grid[roundedY, roundedX] = curr;
@@ -337,40 +381,49 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void DestroyCurrBlock() {
+    private void DestroyCurrBlock()
+    {
         currBlock.Destroy();
         ghostBlock.Destroy();
     }
 
-    private void CheckForLines() {
+    private void CheckForLines()
+    {
         isShowingAnimation = true;
         deletingRow.Clear();
 
-        for (int y = Helper.HEIGHT - 1; y >= 0; y--) {
-            if (HasLine(y)) {
+        for (int y = Helper.HEIGHT - 1; y >= 0; y--)
+        {
+            if (HasLine(y))
+            {
                 deletingRow.Add(y);
             }
         }
         linesDeleted += deletingRow.Count;
-        score = 5*linesDeleted;
-        if (deletingRow != null) {
+        score = 5 * linesDeleted;
+        if (deletingRow != null)
+        {
             isAnimating = true;
         }
     }
 
-    private bool HasLine(int y) {
-        for (int x = 0; x < Helper.WIDTH; x++) {
+    private bool HasLine(int y)
+    {
+        for (int x = 0; x < Helper.WIDTH; x++)
+        {
             if (grid[y, x] == null) return false;
         }
         return true;
     }
 
-    private void EndTurn() {
+    private void EndTurn()
+    {
         isEndTurn = true;
         print("EndTurn");
         FindObjectOfType<AudioManager>().Play("Blip");
         hardDropped = true;
-        foreach (var y in deletingRow) {
+        foreach (var y in deletingRow)
+        {
             StartCoroutine(DeleteLine(y));
             StartCoroutine(WaitForRowDown(y));
         }
@@ -378,21 +431,26 @@ public class GameController : MonoBehaviour {
         isAnimating = false;
     }
 
-    private IEnumerator DeleteLine(int y) {
+    private IEnumerator DeleteLine(int y)
+    {
         print("deleteline");
         isDestroying = true;
         int[] destroyedBlocks = new int[1];
         destroyedBlocks[0] = 0;
-        for (int x = 0; x < Helper.WIDTH; x++) {
-            if (grid[y, x] != null) {
+        for (int x = 0; x < Helper.WIDTH; x++)
+        {
+            if (grid[y, x] != null)
+            {
                 StartCoroutine(DeleteLineEffect(grid[y, x], destroyedBlocks));
             }
         }
 
-        while (destroyedBlocks[0] < 10) {
+        while (destroyedBlocks[0] < 10)
+        {
             yield return new WaitForSeconds(0.1f);
         }
-        for (int x = 0; x < Helper.WIDTH; x++) {
+        for (int x = 0; x < Helper.WIDTH; x++)
+        {
             if (grid[y, x] == null) continue;
             if (grid[y, x].transform.GetComponent<GemBlock>() != null) numGems--;
             grid[y, x].Destroy();
@@ -402,77 +460,95 @@ public class GameController : MonoBehaviour {
         destroyedBlocks[0] = 0;
     }
 
-    private IEnumerator DeleteLineEffect(Block dead, int[] destroyedBlocks) {
+    private IEnumerator DeleteLineEffect(Block dead, int[] destroyedBlocks)
+    {
         Color tmp = dead.sprite.GetComponent<SpriteRenderer>().color;
         float _progress = 1f;
 
-        while (_progress > 0.0f) {
+        while (_progress > 0.0f)
+        {
             dead.sprite.GetComponent<SpriteRenderer>().color = new Color(tmp.r, tmp.g, tmp.b, tmp.a * _progress);
             _progress -= 0.1f;
             yield return new WaitForSeconds(0.03f);
         }
 
-        if (_progress < 0.0f && dead != null) {
+        if (_progress < 0.0f && dead != null)
+        {
             destroyedBlocks[0]++;
         }
     }
 
-    private IEnumerator WaitForRowDown(int y) {
-        while (isDestroying) {
+    private IEnumerator WaitForRowDown(int y)
+    {
+        while (isDestroying)
+        {
             yield return new WaitForSeconds(0.01f);
         }
         RowDown(y);
     }
 
-    private IEnumerator WaitForNewBlock() {
-        while (isDestroying || isRowDown) {
+    private IEnumerator WaitForNewBlock()
+    {
+        while (isDestroying || isRowDown)
+        {
             yield return new WaitForSeconds(0.01f);
         }
         NewBlock();
     }
 
-    void RowDown(int deletedLine) {
+    void RowDown(int deletedLine)
+    {
         print("rowdown");
 
         isRowDown = true;
-        for (int y = deletedLine; y < Helper.HEIGHT; y++) {
-            for (int x = 0; x < Helper.WIDTH; x++) {
-                if (y == deletedLine) {
+        for (int y = deletedLine; y < Helper.HEIGHT; y++)
+        {
+            for (int x = 0; x < Helper.WIDTH; x++)
+            {
+                if (y == deletedLine)
+                {
                     grid[y, x] = null;
                 }
-                if (grid[y, x] != null) {
+                if (grid[y, x] != null)
+                {
                     grid[y - 1, x] = grid[y, x];
                     grid[y, x] = null;
                     grid[y - 1, x].transform.position -= Vector3.up;
-				}
+                }
             }
         }
         isRowDown = false;
     }
 
-    bool ValidMove(Transform transform) {
-        foreach (Transform children in transform) {
+    bool ValidMove(Transform transform)
+    {
+        foreach (Transform children in transform)
+        {
             int roundedY = Mathf.RoundToInt(children.transform.position.y);
             int roundedX = Mathf.RoundToInt(children.transform.position.x);
-            if (roundedX < 0 || roundedX >= Helper.WIDTH || roundedY < 0 || roundedY >= Helper.HEIGHT) {
+            if (roundedX < 0 || roundedX >= Helper.WIDTH || roundedY < 0 || roundedY >= Helper.HEIGHT)
+            {
                 return false;
             }
-            if (grid[roundedY, roundedX] != null) {
+            if (grid[roundedY, roundedX] != null)
+            {
                 return false;
             }
         }
         return true;
     }
 
-    public Vector3 GhostPosition(Vector3 vec) {
+    public Vector3 GhostPosition(Vector3 vec)
+    {
         int x = Mathf.RoundToInt(vec.x), y = Math.Max(Mathf.RoundToInt(vec.y), 0), z = Mathf.RoundToInt(vec.z);
         ghostBlock.transform.position = new Vector3(x, y, z);
         while (ValidMove(ghostBlock.transform)) ghostBlock.transform.position += Vector3.down;
-        
+
         return ghostBlock.transform.position + Vector3.up;
     }
 
-    public void NewBlock() {
+    public void NewBlock()
+    {
         print("newblock start");
         currBlock = Instantiate(Blocks[nextBlock], startPos, Quaternion.identity);
         isShowingAnimation = false;
@@ -482,18 +558,23 @@ public class GameController : MonoBehaviour {
         print("newblock end");
     }
 
-    private void NewGhost() {
+    private void NewGhost()
+    {
         print("newghost start");
-        if (ghostBlock != null) {
+        if (ghostBlock != null)
+        {
             ghostBlock.Destroy();
             ghostBlock = Instantiate(Ghosts[nextBlock], currBlock.transform.position, Quaternion.identity);
-        } else {
+        }
+        else
+        {
             ghostBlock = Instantiate(Ghosts[nextBlock], currBlock.transform.position, Quaternion.identity);
         }
         print("newghostend");
-}
+    }
 
-    private void GameFinish() {
+    private void GameFinish()
+    {
         print("GAME OVER!!!");
 
         if (ghostBlock != null) ghostBlock.Destroy();
@@ -512,22 +593,22 @@ public class GameController : MonoBehaviour {
         FindObjectOfType<AudioManager>().Stop("GameStart");
     }
 
-    private void GameClear() {
+    private void GameClear()
+    {
         print("GameClear");
         currStage++;
-        
+
         if (currStage == 10) GameFinish();
         if (ghostBlock != null) ghostBlock.Destroy();
         infoText.SetActive(true);
         infoText.GetComponent<TextMeshProUGUI>().text = "C H U Y Ể N  M À N";
         FindObjectOfType<AudioManager>().Stop("GameStart");
         FindObjectOfType<AudioManager>().Play("GameClear");
-        restartButton.SetActive(false);
-        restartIcon.SetActive(false);
         StartCoroutine(CountDown());
     }
 
-    private IEnumerator CountDown() {
+    private IEnumerator CountDown()
+    {
         isCounting = true;
         yield return new WaitForSeconds(0.5f);
         infoText.GetComponent<TextMeshProUGUI>().text = "3";
@@ -538,12 +619,16 @@ public class GameController : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         isCounting = false;
 
+        //InitGame();
         gameClear = false;
         infoText.SetActive(false);
         SetStage();
+        NextBlock();
+        NewBlock();
     }
 
-    public void GoBack() {
+    public void GoBack()
+    {
         SceneManager.LoadScene("ModeScene");
     }
 }
