@@ -115,6 +115,7 @@ public class GameController : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
             return;
         }
+        EventSystem.current.SetSelectedGameObject(null);
         currStage = 0;
         numGems = 0;
         score = 0;
